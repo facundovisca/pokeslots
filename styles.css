@@ -1,0 +1,235 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #050b05;
+  background-image: url('assets/images/background.jpg');
+  background-size: cover;
+  background-position: center;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  user-select: none;
+}
+
+/* La máquina ahora se agranda al máximo manteniendo su proporción 16:9 */
+.slot-machine {
+  position: relative;
+  height: 88vh;
+  width: calc(88vh * (16 / 9));
+  max-width: 96vw;
+  max-height: calc(96vw * (9 / 16));
+  filter: drop-shadow(0 15px 35px rgba(0, 0, 0, 0.9));
+}
+
+/* 1. Marco frontal */
+.frame-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* 2. Rodillos detrás del marco */
+.reels-layer {
+  position: absolute;
+  left: 21.8%;
+  top: 19.1%;
+  width: 67.4%;
+  height: 51.0%;
+  overflow: hidden;
+  display: flex;
+  background: #080202;
+  z-index: 1;
+}
+
+.reel {
+  width: 20%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  will-change: transform;
+}
+
+.symbol {
+  width: 100%;
+  height: 33.333%;
+  min-height: 33.333%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  box-sizing: border-box;
+}
+
+.symbol.masterball    { background-image: url('assets/symbols/masterball.png'); }
+.symbol.fire_stone    { background-image: url('assets/symbols/fire_stone.png'); }
+.symbol.thunder_stone { background-image: url('assets/symbols/thunder_stone.png'); }
+.symbol.seven         { background-image: url('assets/symbols/seven.png'); }
+.symbol.berry         { background-image: url('assets/symbols/berry.png'); }
+.symbol.bar           { background-image: url('assets/symbols/bar.png'); }
+.symbol.wild          { background-image: url('assets/symbols/wild.png'); }
+
+/* 3. Escalera de premios (por encima del marco, z-index: 20) */
+.ladder-layer {
+  position: absolute;
+  left: 3.6%;
+  top: 21.2%;
+  width: 9.6%;
+  height: 45.4%;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  z-index: 20;
+}
+
+.ladder-layer li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 12.8%;
+  padding: 0 8%;
+  font-size: clamp(9px, 1.2vh, 13px);
+  font-weight: 900;
+  color: #ffde59;
+  border-radius: 4px;
+  text-shadow: 1px 1px 2px #000;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.ladder-layer li .val {
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.ladder-layer li.active-prize {
+  background: radial-gradient(circle, #ffea79, #e5a900);
+  color: #2b1100;
+  text-shadow: none;
+  box-shadow: 0 0 12px #ffcc00;
+  transform: scale(1.06);
+}
+
+/* 4. Displays de la barra inferior */
+.ui-slot {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  z-index: 20;
+}
+
+.bottom-left-display {
+  left: 24.0%;
+  top: 80.2%;
+  width: 20.8%;
+  height: 7.6%;
+}
+
+.bottom-right-display {
+  left: 60.0%;
+  top: 80.2%;
+  width: 20.8%;
+  height: 7.6%;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.stat-unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.bet-unit {
+  flex-direction: row;
+  gap: 6px;
+}
+
+.bet-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.lbl {
+  font-size: clamp(7px, 1vh, 10px);
+  font-weight: bold;
+  color: #d4af37;
+  letter-spacing: 0.5px;
+}
+
+.num {
+  font-size: clamp(11px, 1.6vh, 16px);
+  color: #fff;
+  font-family: monospace;
+  font-weight: bold;
+}
+
+.win-glow {
+  color: #66ff66 !important;
+  font-size: clamp(13px, 2vh, 20px);
+  text-shadow: 0 0 10px rgba(102, 255, 102, 0.8);
+}
+
+.step-btn {
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid #d4af37;
+  color: #ffde59;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  font-weight: bold;
+  font-size: 13px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.1s, background 0.1s;
+}
+
+.step-btn:hover {
+  background: #ffcc00;
+  color: #000;
+}
+
+.step-btn:active {
+  transform: scale(0.9);
+}
+
+/* Botón de Giro circular central */
+.spin-hotspot {
+  position: absolute;
+  left: 47.3%;
+  top: 76.7%;
+  width: 9.8%;
+  height: 17.4%;
+  border-radius: 50%;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  z-index: 25;
+}
+
+.spin-hotspot:active {
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, transparent 70%);
+}
+
+.spin-hotspot:disabled {
+  cursor: not-allowed;
+  filter: grayscale(0.8);
+}

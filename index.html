@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pokémon 9 Master Balls of Fire</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="slot-machine">
+    
+    <!-- 1. Los 5 Rodillos (Atrás del marco) -->
+    <div class="reels-layer">
+      <div class="reel" id="reel-0"></div>
+      <div class="reel" id="reel-1"></div>
+      <div class="reel" id="reel-2"></div>
+      <div class="reel" id="reel-3"></div>
+      <div class="reel" id="reel-4"></div>
+    </div>
+
+    <!-- 2. Marco con transparencias (Capa intermedia) -->
+    <img src="assets/images/frame.png" class="frame-overlay" alt="Marco del Tragamonedas" />
+
+    <!-- 3. Escalera de Premios (Por ENCIMA del marco para que se vea adentro de cada casillero) -->
+    <ul class="ladder-layer">
+      <li data-count="9"><span class="badge">9</span><span class="val">2,000</span></li>
+      <li data-count="8"><span class="badge">8</span><span class="val">500</span></li>
+      <li data-count="7"><span class="badge">7</span><span class="val">100</span></li>
+      <li data-count="6"><span class="badge">6</span><span class="val">40</span></li>
+      <li data-count="5"><span class="badge">5</span><span class="val">15</span></li>
+      <li data-count="4"><span class="badge">4</span><span class="val">5</span></li>
+      <li data-count="3"><span class="badge">3</span><span class="val">1</span></li>
+    </ul>
+
+    <!-- 4. Controles y displays inferiores (Calibrados a las molduras) -->
+    <!-- Caja izquierda: Créditos y Apuesta -->
+    <div class="ui-slot bottom-left-display">
+      <div class="stat-unit">
+        <span class="lbl">CRÉDITOS</span>
+        <span id="credits" class="num">2000.00</span>
+      </div>
+      <div class="stat-unit bet-unit">
+        <button id="btn-minus" class="step-btn">-</button>
+        <div class="bet-info">
+          <span class="lbl">APUESTA</span>
+          <span id="bet-amount" class="num">1.00</span>
+        </div>
+        <button id="btn-plus" class="step-btn">+</button>
+      </div>
+    </div>
+
+    <!-- Botón circular central de Giro -->
+    <button id="spin-btn" class="spin-hotspot" title="Girar"></button>
+
+    <!-- Caja derecha: Ganancia -->
+    <div class="ui-slot bottom-right-display">
+      <span class="lbl">PREMIO</span>
+      <span id="win-display" class="num win-glow">0.00</span>
+    </div>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

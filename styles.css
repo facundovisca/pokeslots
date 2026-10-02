@@ -20,7 +20,7 @@ body {
   user-select: none;
 }
 
-/* La máquina ahora se agranda al máximo manteniendo su proporción 16:9 */
+/* El gabinete escala proporcionalmente ocupando la pantalla */
 .slot-machine {
   position: relative;
   height: 88vh;
@@ -30,7 +30,7 @@ body {
   filter: drop-shadow(0 15px 35px rgba(0, 0, 0, 0.9));
 }
 
-/* 1. Marco frontal */
+/* 1. Marco frontal de oro */
 .frame-overlay {
   position: absolute;
   top: 0;
@@ -63,6 +63,7 @@ body {
   will-change: transform;
 }
 
+/* Cada símbolo cuadrado, sin deformación */
 .symbol {
   width: 100%;
   height: 33.333%;
@@ -74,6 +75,18 @@ body {
   background-repeat: no-repeat;
   background-position: center;
   box-sizing: border-box;
+  transition: transform 0.2s;
+}
+
+/* Animación de símbolos ganadores */
+.symbol.winner {
+  animation: winPulse 0.8s ease-in-out infinite alternate;
+  filter: drop-shadow(0 0 10px #ffea79);
+}
+
+@keyframes winPulse {
+  0% { transform: scale(0.92); }
+  100% { transform: scale(1.08); }
 }
 
 .symbol.masterball    { background-image: url('assets/symbols/masterball.png'); }
@@ -84,7 +97,33 @@ body {
 .symbol.bar           { background-image: url('assets/symbols/bar.png'); }
 .symbol.wild          { background-image: url('assets/symbols/wild.png'); }
 
-/* 3. Escalera de premios (por encima del marco, z-index: 20) */
+/* Lienzo SVG para trazar líneas de premio */
+.paylines-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 8;
+}
+
+.payline-path {
+  fill: none;
+  stroke: #ffea79;
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 6px #ff3b00);
+  animation: drawLine 0.5s linear forwards;
+}
+
+@keyframes drawLine {
+  from { stroke-dashoffset: 1000; }
+  to { stroke-dashoffset: 0; }
+}
+
+/* 3. Escalera lateral de premios */
 .ladder-layer {
   position: absolute;
   left: 3.6%;
@@ -103,8 +142,8 @@ body {
   justify-content: space-between;
   align-items: center;
   height: 12.8%;
-  padding: 0 8%;
-  font-size: clamp(9px, 1.2vh, 13px);
+  padding: 0 4% 0 2%;
+  font-size: clamp(8px, 1.1vh, 12px);
   font-weight: 900;
   color: #ffde59;
   border-radius: 4px;
@@ -112,19 +151,45 @@ body {
   transition: background 0.2s, transform 0.2s;
 }
 
+.rung-badge {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.ladder-icon {
+  width: clamp(14px, 2vh, 20px);
+  height: clamp(14px, 2vh, 20px);
+  object-fit: contain;
+  filter: drop-shadow(0 0 3px rgba(170, 0, 255, 0.8));
+}
+
+.ladder-layer li .badge {
+  color: #ffea79;
+  font-size: clamp(9px, 1.2vh, 13px);
+}
+
 .ladder-layer li .val {
   font-family: 'Courier New', Courier, monospace;
+  font-size: clamp(8px, 1.1vh, 12px);
+  color: #ffffff;
+  letter-spacing: -0.5px;
 }
 
 .ladder-layer li.active-prize {
   background: radial-gradient(circle, #ffea79, #e5a900);
   color: #2b1100;
   text-shadow: none;
-  box-shadow: 0 0 12px #ffcc00;
-  transform: scale(1.06);
+  box-shadow: 0 0 14px #ffcc00;
+  transform: scale(1.08);
 }
 
-/* 4. Displays de la barra inferior */
+.ladder-layer li.active-prize .val {
+  color: #110202;
+  font-weight: 900;
+}
+
+/* 4. Panel inferior */
 .ui-slot {
   position: absolute;
   display: flex;
@@ -211,7 +276,7 @@ body {
   transform: scale(0.9);
 }
 
-/* Botón de Giro circular central */
+/* Botón de giro transparente ubicado sobre el centro del marco */
 .spin-hotspot {
   position: absolute;
   left: 47.3%;
